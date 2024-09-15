@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,12 +6,10 @@ const { MongoClient, ObjectId } = require('mongodb');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// MongoDB connection URI
 const uri = 'mongodb+srv://ekalaja:admin@pulsecluster0.zzm0e.mongodb.net/?retryWrites=true&w=majority&appName=pulsecluster0';
 // const uri = 'mongodb://127.0.0.1:27017/pulsedb';
 const client = new MongoClient(uri);
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -73,12 +70,19 @@ app.use(bodyParser.json());
   }
 })();
 
-// Root route
+app.get('/recs', callRecs); 
+function callRecs (req, res) {
+    var spawn = require("child_process").spawn; 
+    var process = spawn('python',["./recs.py", "37i9dQZF1E37Kg40mFJtCf"]);//req.query.playlist_id]);
+    process.stdout.on('data', function(data) { 
+        res.send(data.toString()); 
+    });
+}
+
 app.get('/', (req, res) => {
-  res.send('API is working');
+  res.send('API is running...');
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
