@@ -196,27 +196,6 @@ res = {
 
 print(res)
 
-def get_album_covers(recommended_songs_dict_list):
-    sp = spotipy.Spotify(auth=access_token)
-    album_covers_dict = {}
-
-    for song in recommended_songs_dict_list:
-        track_id = song['Song ID']
-        track_info = sp.track(track_id)  # Fetch track info
-        album_info = track_info['album']  # Get album information
-        
-        # Get the album cover image URL (Spotify provides multiple sizes, so we can choose the first one)
-        album_cover_url = album_info['images'][0]['url'] if album_info['images'] else None
-        
-        # Store the album cover URL in the dictionary with song name as key
-        album_covers_dict[song['Album']] = album_cover_url
-
-    return album_covers_dict
-
-album_covers = get_album_covers(recs)
-for song, cover_url in album_covers.items():
-    print(f"Song: {song}, Album Cover URL: {cover_url}")
-
 # #print(f"Hybrid recommended songs for '{input_song_name}':")
 # #print(recommendations.to_string(index=False))
 # durationinms = 6000000
